@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Register Mascot It | Sketch Club</title>
+     <meta property="og:title" content="Sketch Club">
+     <meta name="description" content="A club of SRM Institute of Science & Technology">
+  
+       <meta name="msapplication-TileColor" content="#000">
+      <meta name="theme-color" content="#fff">
+      <meta name="msapplication-navbutton-color" content="#fff">
+      <meta name="apple-mobile-web-app-status-bar-style" content="#fff">
+      <link rel="apple-touch-icon" sizes="180x180" href="vendor/content/themes/twig-starter/dist/assets/favicon/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="vendor/content/themes/twig-starter/dist/assets/favicon/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="vendor/content/themes/twig-starter/dist/assets/favicon/favicon-16x16.png">
+      <meta name="msapplication-TileColor" content="#fff">
+      <meta name="theme-color" content="#fff">
+ 
+      <link rel="shortcut icon" href="vendor/content/themes/twig-starter/dist/assets/favicon/favicon.ico">
+ 
+  <script src="https://unpkg.com/prefixfree@1.0.0/prefixfree.min.js"></script>
+
+  <script src="https://wzrd.in/standalone/formdata-polyfill@latest"></script>
+  <script src="https://wzrd.in/standalone/promise-polyfill@latest"></script>
+  <script src="https://wzrd.in/standalone/whatwg-fetch@latest"></script>
+  
+   <link rel='stylesheet' href='style.css' />
+   
+  <style>
+
+ :root {
+      --accent: #F18260;
+      --purple: #252431;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #eee;
+      color: var(--purple);
+      padding: 10% 5%;
+      font-family: system, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.4;
+    }
+
+    .form-container {
+      position: relative;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 350px;
+      min-height: 300px;
+      margin: 0 auto;
+      box-shadow: 0 10px 50px 0 #ccc;
+      margin-bottom: 2rem;
+    }
+
+    input, button {
+      appearance: none;
+      border: none;
+      font-size: inherit;
+      background: #eee;
+      border-radius: 3px;
+      padding: 1rem;
+      width: 100%;
+    }
+
+    input {
+      margin-bottom: 1rem;
+    }
+
+    input:focus {
+      outline: 1px solid var(--accent);
+    }
+
+    button {
+      color: #fff;
+      cursor: pointer;
+      background-color: var(--purple);
+    }
+
+    button:hover {
+      background-color: var(--accent);
+    }
+
+    .is-hidden {
+      display: none !important;
+    }
+
+    a {
+      display: block;
+      width: max-content;
+      margin: 0 auto;
+      color: var(--accent);
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+    }
+
+    @keyframes rotate {
+     100% { transform: rotate(360deg); }
+    }
+
+    @keyframes dash {
+     0% { stroke-dasharray: 1,200; stroke-dashoffset: 0; }
+     50% { stroke-dasharray: 89,200; stroke-dashoffset: -35; }
+     100% { stroke-dasharray: 89,200; stroke-dashoffset: -124; }
+    }
+
+    .loading {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+    }
+
+    .loading-spinner svg {
+      position: relative;
+      animation: rotate 2s linear infinite;
+      height: 50px;
+      width: 50px;
+    }
+
+    .loading-spinner circle {
+      stroke: var(--accent);
+      stroke-dasharray: 1,200;
+      stroke-dashoffset: 0;
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h3 style="" >Mascot It</h3>
+    <form name="submit-to-google-sheet">
+      <input name="Email" type="email" placeholder="Email" required>
+      <input name="Full_Name" type="text" placeholder="Full Name" required>
+      <input name="Reg_no" type="text"   pattern="\w{2}[0-9]{13}"
+        title="Reg_no should be of the type RA1711003020594" placeholder="Registration Number" required>
+	  <input name="Phone_no" type="number" pattern="[0-9]{10}" placeholder="Phone Number" required>
+	  <input name="Year" type="number" min="1" max="3" placeholder="Year" required>
+	  <input name="Section" type="text" placeholder="Section" required>
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="loading js-loading is-hidden">
+      <div class="loading-spinner">
+        <svg><circle cx="25" cy="25" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg>
+      </div>
+    </div>
+
+    <p class="js-success-message is-hidden">Success! Thank you for registering...</p>
+    <p class="js-error-message is-hidden">Error! Something wrong...</p>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzbvbvYq_wfJ9jCKR54WPjd4PmixzgCQ8VaynAE2jT_29qR_Uck/exec'
+    const form = document.forms['submit-to-google-sheet']
+    const loading = document.querySelector('.js-loading')
+    const successMessage = document.querySelector('.js-success-message')
+    const errorMessage = document.querySelector('.js-error-message')
+
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      showLoadingIndicator()
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => showSuccessMessage(response))
+        .catch(error => showErrorMessage(error))
+    })
+
+    function showLoadingIndicator () {
+      form.classList.add('is-hidden')
+      loading.classList.remove('is-hidden')
+    }
+
+    function showSuccessMessage (response) {
+      console.log('Success!', response)
+      setTimeout(() => {
+        successMessage.classList.remove('is-hidden')
+        loading.classList.add('is-hidden')
+      }, 500)
+    }
+
+    function showErrorMessage (error) {
+      console.error('Error!', error.message)
+      setTimeout(() => {
+        errorMessage.classList.remove('is-hidden')
+        loading.classList.add('is-hidden')
+      }, 500)
+    }
+  </script>
+
+</body>
+</html>
